@@ -93,7 +93,7 @@ export default function LoginInForm() {
         <Image src="/image/Logo.png" alt="logo" width={140} height={100} className="scale-140" />
       </div>
       <div className={`${inter.className} flex items-center justify-center flex-col`}>
-        <h2 className={`${inter.className} text-[#247FBA] text-2xl font-bold mb-6 text-center`}>Log in</h2>
+        <h2 className={`${inter.className} text-[#247FBA] text-2xl font-bold mb-6 text-center`}>Admin Log in</h2>
         <p className="-mt-6 text-xs font-bold text-center text-gray-400 mb-3">Login To an Account <br /> to Connect with your interested verified property</p>
       </div>
       <form onSubmit={handleSubmit} className={`${inter.className} space-y-4`}>
@@ -156,7 +156,7 @@ export default function LoginInForm() {
           Google Login
         </Button>
       </div>
-      <p className="mt-5 text-xs font-bold text-center text-gray-400">Don &apos t have an Account, <Link href={"/auth/sign-in"}><span className="hover:underline"> Sign-up</span></Link></p>
+      {/* <p className="mt-5 text-xs font-bold text-center text-gray-400">Don &apos t have an Account, <Link href={"/auth/sign-in"}><span className="hover:underline"> Sign-up</span></Link></p> */}
     </div>
   );
 }

@@ -69,6 +69,12 @@ export default function Home() {
             <div
               className={`${inter.className} flex items-center justify-center flex-col`}
             >
+
+               <h2
+                className={`${inter.className} text-[#247FBA] text-xl font-bold  text-center flex items-center justify-center gap-1`}
+              >
+                Admin Portal
+              </h2>
               <h2
                 className={`${inter.className} text-[#247FBA] text-2xl font-bold mb-6 text-center flex items-center justify-center gap-1`}
               >
@@ -82,14 +88,6 @@ export default function Home() {
 
             {/* Buttons */}
             <div className="flex items-center justify-center flex-col">
-            <Link href={"/auth/sign-in"}>
-              <Button
-                type="submit"
-                className="w-80 mt-4 bg-[#247FBA] transition-all hover:scale-105 hover:bg-white hover:border-2 hover:text-[#247FBA]"
-              >
-                Sign-in
-              </Button>
-            </Link>
              
              <Link href={"/auth/login"}>
               <Button
