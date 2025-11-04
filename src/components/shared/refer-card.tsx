@@ -31,12 +31,17 @@ function ReferCard({ lead }) {
   const BASEURL = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
 
+  
+
+
+
   // ✅ handle API call
   const handleLeadApproval = async (id) => {
     try {
       setLoading(true);
       const response = await axios.post(`${BASEURL}/api/refer/setCustomerleadtoApproval`, { id }); // change API path if needed
       alert("Lead approved successfully!");
+  
       console.log("Response:", response.data);
       window.location.reload()
     } catch (error) {
