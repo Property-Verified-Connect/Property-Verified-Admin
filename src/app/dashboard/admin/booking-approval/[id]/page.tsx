@@ -54,7 +54,7 @@ interface ApprovedProperty {
 interface PropertyDetails {
   _id: string;
   user_id: User;
-  approved_property_id: ApprovedProperty;
+  property_approved: ApprovedProperty;
   status?: string;
   booking_date?: string;
 }
@@ -179,7 +179,7 @@ const Page: React.FC = () => {
             {propertyDetails && !isLoading ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <img
-                  src={propertyDetails.approved_property_id.photos?.[0]}
+                  src={propertyDetails.property_approved.photos?.[0]}
                   alt={property.title}
                   className="w-full h-96 object-cover rounded-2xl shadow-md"
                 />
@@ -203,16 +203,16 @@ const Page: React.FC = () => {
             <h1
               className={`${inter.className} font-bold text-gray-700 text-2xl flex items-center gap-1`}
             >
-              {propertyDetails?.approved_property_id.property_type || ""}
+              {propertyDetails?.property_approved.property_type || ""}
             </h1>
             <br />
             <p>
               <strong>Property Name</strong>
-              <br /> {propertyDetails?.approved_property_id.property_type}
+              <br /> {propertyDetails?.property_approved.property_type}
             </p>
             <p>
               <strong>Location</strong> <br />{" "}
-              {propertyDetails?.approved_property_id.location}
+              {propertyDetails?.property_approved.location}
             </p>
             <p>
               <strong>RERA Number</strong> <br /> {property.RERA}
@@ -226,7 +226,7 @@ const Page: React.FC = () => {
             <p>
               <strong>Partner:</strong>
               <br />
-              {propertyDetails?.approved_property_id.user_id.name}
+              {propertyDetails?.property_approved.user_id.name}
             </p>
 
             <p>

@@ -17,22 +17,33 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 interface Property {
   id: string;
-  approved_property_id: {
-    photos: string;
-    property_type: string;
+  property_approved: {
+    id: string;
+    city: string;
+    price: number;
+    photos: string[];
     user_id: {
       name: string;
     };
-    price: number;
+    property_type: string;
   };
   user_id: {
+    id: string;
     name: string;
+    email: string;
+    contact: string;
   };
-  config: string;
+  visit_type: string;
+  visit_date: string;
+  visit_time: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
 }
 
 function Page() {
   const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -40,11 +51,12 @@ function Page() {
         const response = await axios.get(
           `${BASE_URL}/api/user/getBookingforApproval`
         );
-        // Set properties from response; adapt the path to your API shape if needed
-        setProperties(response.data.booking ?? response.data ?? []);
+        setProperties(response.data.booking || []);
       } catch (err) {
         console.error("Failed to fetch properties", err);
         setProperties([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProperties();
@@ -52,7 +64,7 @@ function Page() {
 
   useEffect(() => {
     console.log(properties);
-  });
+  }, [properties]);
 
   return (
     <div>
@@ -60,7 +72,7 @@ function Page() {
       <div className="min-h-screen w-full overflow-hidden bg-[#CDE4F9] py-17 px-4 flex items-center justify-start flex-col">
         <div className="flex items-center justify-center gap-1 md:gap-3">
           <Link href={"/dashboard/admin"}>
-            <Button variant="outline" className="mb-2  rounded-full">
+            <Button variant="outline" className="mb-2 rounded-full">
               <ArrowLeft />
             </Button>
           </Link>
@@ -74,29 +86,30 @@ function Page() {
             />
           </div>
         </div>
-        <div className="  py-2 px-5 md:-ml-20 flex items-start  w-96 ">
+        <div className="py-2 px-5 md:-ml-20 flex items-start w-96">
           <h1
-            className={`${inter.className} font-bold text-gray-600 text-2xl     flex items-center justify-center mb-2 `}
+            className={`${inter.className} font-bold text-gray-600 text-2xl flex items-center justify-center mb-2`}
           >
             User Booking Request <ChevronRight />
           </h1>
         </div>
 
         <div className="h-full w-96 px-3.5 flex flex-col gap-2">
-          {properties.length > 0 ? (
-            properties.map((p, i) => (
-              <BookingCards key={i} property={p} type={"admin"} />
+          {loading ? (
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-30 w-full" />
+              <Skeleton className="h-30 w-full" />
+              <Skeleton className="h-30 w-full" />
+              <Skeleton className="h-30 w-full" />
+            </div>
+          ) : properties.length > 0 ? (
+            properties.map((p) => (
+              <BookingCards key={p.id} property={p} type={"admin"} />
             ))
           ) : (
-            // Fallback: show a few placeholders or a message
-            <>
-              <div className="flex flex-col gap-1">
-                <Skeleton className="h-30 w-full" />
-                <Skeleton className="h-30 w-full" />
-                <Skeleton className="h-30 w-full" />
-                <Skeleton className="h-30 w-full" />
-              </div>
-            </>
+            <div className="text-center text-gray-500 py-8">
+              No booking requests found
+            </div>
           )}
         </div>
       </div>
