@@ -2,7 +2,7 @@ import React, { useState, useEffect, JSX } from "react";
 import Link from "next/link";
 import { Inter } from "next/font/google";
 import axios from "axios";
-import { ChevronRightIcon, User, Handshake, UserPlus } from "lucide-react";
+import { ChevronRightIcon, User, Handshake, UserPlus, BlocksIcon, UserRoundX } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -25,6 +25,7 @@ const inter = Inter({
 export default function AdminDashboard() {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
   const [Count, setCount] = useState<number | null>(null);
+   const [Countuser, setCountuser] = useState<number | null>(null);
   const [automationMode, setAutomationMode] = useState<"auto" | "manual">("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingMode, setPendingMode] = useState<"auto" | "manual" | null>(null);
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
       try {
         const response = await axios.get(`${BASE_URL}/api/partner/getAllProperties`);
         setCount(response?.data?.count ?? 0);
+      
       } catch (error) {
         console.error("Failed to fetch properties", error);
       }
@@ -44,6 +46,24 @@ export default function AdminDashboard() {
   }, [BASE_URL]);
 
   // Fetch current automation flag on mount
+ useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/user/getBookingforApproval`
+        );
+       setCountuser(response.data.booking.length)
+      } catch (err) {
+        console.error("Failed to fetch properties", err);
+       
+      } finally {
+         console.log("done")
+      }
+    };
+    fetchProperties();
+  }, []);
+
+
   useEffect(() => {
     const fetchAutomationFlag = async () => {
       if (!BASE_URL) return;
@@ -60,6 +80,9 @@ export default function AdminDashboard() {
     };
     fetchAutomationFlag();
   }, [BASE_URL]);
+
+
+
 
   const handleModeClick = (mode: "auto" | "manual") => {
     if (mode === automationMode) return;
@@ -93,9 +116,9 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className={`${inter.className} flex flex-col h-screen bg-[#CDE4F9]`}>
+    <div className={`${inter.className} flex flex-col pb-25 md:items-center md:justify-center w-full h-screen bg-[#CDE4F9]`}>
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-4 py-3">
+      <div className="flex-1  px-4 py-3  ">
         <h1 className={`text-2xl ${inter.className} font-bold text-gray-600 flex items-center mb-2 mt-2`}>
           Admin Dashboard <ChevronRightIcon />
         </h1>
@@ -133,7 +156,7 @@ export default function AdminDashboard() {
           </h1>
           <div className="flex items-center justify-center gap-2 w-full">
             <div className="h-20 w-1/2 flex items-center justify-center flex-col rounded-2xl bg-[#CDE4F9]">
-              <h1 className="font-bold text-2xl text-gray-700">3</h1>
+              <h1 className="font-bold text-2xl text-gray-700">{Countuser}</h1>
               <h1>User Pending</h1>
             </div>
             <div className="h-20 w-1/2 flex items-center justify-center flex-col rounded-2xl bg-[#CDE4F9]">
@@ -153,6 +176,9 @@ export default function AdminDashboard() {
           </Link>
           <Link href={"/dashboard/admin/refer-approval"}>
             <FeatureCard index={2} label="Customer Lead Request" />
+          </Link>
+            <Link href={"/dashboard/admin/suspicious-partner"}>
+            <FeatureCard index={3} label="Suspicious  Partner Listing " />
           </Link>
         </div>
       </div>
@@ -197,12 +223,13 @@ function FeatureCard({ index, label }: FeatureCardProps) {
     <User key="user-icon" size={50} color="#2396C6" />,
     <Handshake key="handshake-icon" size={50} color="#2396C6" />,
     <UserPlus key="userplus-icon" size={50} color="#2396C6" />,
+    <UserRoundX key="block-icon" size={50} color="#2396C6" />,
   ]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-md py-6 hover:scale-105 transition-transform">
+    <div className="flex flex-col p-3 items-center justify-center bg-white rounded-2xl shadow-md py-6 hover:scale-105 transition-transform">
       {Icon[index]}
-      <p className={`${inter.className} text-sm font-medium mt-2 text-center`}>{label}</p>
+      <p className={`${inter.className} text-sm font-medium mt-2 text-center`}> {label}</p>
     </div>
   );
 }
