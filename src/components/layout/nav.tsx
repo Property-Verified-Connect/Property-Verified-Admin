@@ -14,7 +14,7 @@ const inter = Inter({
 function Nav() {
    const [user, setUser] = useState();
    useEffect(() => {
-        const storedUser = localStorage.getItem("userdata");
+        const storedUser = localStorage.getItem("admindata");
         if (storedUser) {
             const parsed = JSON.parse(storedUser) as User;
             setUser(parsed);

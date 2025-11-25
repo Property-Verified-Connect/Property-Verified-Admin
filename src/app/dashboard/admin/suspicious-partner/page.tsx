@@ -87,7 +87,7 @@ function PartnerCardSkeleton() {
 }
 
 function Page() {
-  const [activeTab, setActiveTab] = useState<'partners' | 'suspicious'>('partners')
+  const [activeTab, setActiveTab] = useState<'partners' | 'suspicious'>('suspicious')
   const [partners, setPartners] = useState<Partner[]>([])
   const [suspiciousPartners, setSuspiciousPartners] = useState<Partner[]>([])
   const [loadingPartners, setLoadingPartners] = useState(false)
@@ -245,6 +245,13 @@ function Page() {
 
           {/* Tab Buttons */}
           <div className='h-10 w-full flex items-center justify-center gap-1'>
+             <Button
+              variant={activeTab == 'partners' ? "select" : "selectdashed"}
+              className={activeTab === 'partners' ? 'bg-white w-1/2' : 'w-1/2'}
+              onClick={() => setActiveTab('suspicious')}
+            >
+              Suspicious Partner
+            </Button>
             <Button
               variant={activeTab === 'suspicious' ? "select" : "selectdashed"}
               className={activeTab === 'suspicious' ? 'bg-white w-1/2' : 'w-1/2'}
@@ -252,13 +259,7 @@ function Page() {
             >
               Partner List
             </Button>
-            <Button
-              variant={activeTab == 'partners' ? "select" : "selectdashed"}
-              className={activeTab === 'partners' ? 'bg-white w-1/2' : 'w-1/2'}
-              onClick={() => setActiveTab('suspicious')}
-            >
-              Suspicious Partner
-            </Button>
+          
           </div>
 
           {/* Partner List Section */}
